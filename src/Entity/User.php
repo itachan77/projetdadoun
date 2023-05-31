@@ -24,6 +24,9 @@ class User implements UserInterface
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $lotGagne = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $aParticipe = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -87,6 +90,18 @@ class User implements UserInterface
     public function setLotGagne(?string $lotGagne): self
     {
         $this->lotGagne = $lotGagne;
+
+        return $this;
+    }
+
+    public function isAParticipe(): ?bool
+    {
+        return $this->aParticipe;
+    }
+
+    public function setAParticipe(?bool $aParticipe): self
+    {
+        $this->aParticipe = $aParticipe;
 
         return $this;
     }

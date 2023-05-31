@@ -35,10 +35,9 @@ class ParticipationController extends AbstractController
      *
      * @param Request $request
      * @param UserRepository $userRepo
-     * @param SessionInterface $session
      * @return Response
      */
-    public function index(Request $request, UserRepository $userRepo, SessionInterface $session): Response
+    public function index(Request $request, UserRepository $userRepo): Response
     {
 
         $session = $request->getSession();
@@ -117,13 +116,28 @@ class ParticipationController extends AbstractController
      */
     public function tirer(TirageService $tirageService, UserRepository $userRepo, Request $request): Response
     {
-
+        $session = $request->getSession();
         $lotGagnant = $tirageService->getLotGagant();
+
         $joueur = $userRepo->findOneBy(['email' => $request->query->get('email')]);
         
 
-        $lot = array_keys($lotGagnant);
-        $affichageConfirmation = $tirageService->persisterLot($lot[0], $joueur);
+        if ($joueur->isAParticipe() == 1) {
+            $session->getFlashBag()->add('message', 'Vous avez déjà participé à ce jeux !');
+            $session->set('statut', 'warning');
+    
+            return $this->redirect($this->generateUrl('app_participation', [
+                'session' => $session,
+            ]));
+
+        } else {
+            $joueur->setAParticipe(1);
+            $lot = array_keys($lotGagnant);
+            $affichageConfirmation = $tirageService->persisterLot($lot[0], $joueur);
+        }
+
+
+
 
         // $affichageConfirmation = $tirageService->persisterLot();
 

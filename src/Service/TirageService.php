@@ -39,6 +39,8 @@ class TirageService {
         // Calcul de la somme des probabilités
         $totalProbabilite = array_sum($probabilites);
 
+  
+        
         // Génération d'un nombre aléatoire entre 1 et la somme des probabilités
         $randomNombre = random_int(1, $totalProbabilite);
 
@@ -93,8 +95,11 @@ class TirageService {
     public function persisterLot ($logGagne, $joueur) {
 
         if ($logGagne && $joueur) {
-            $this->em->persist($joueur);
-            $this->em->flush();
+
+                $joueur->setAParticipe(1);
+                $this->em->persist($joueur);
+                $this->em->flush();
+
             
             return 'Votre gain a bien été enregistré !';
 
