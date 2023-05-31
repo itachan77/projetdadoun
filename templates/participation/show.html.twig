@@ -1,19 +1,44 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}BIENVENUE A NOTRE TIRAGE AU SORT{% endblock %}
+{% block title %}BIENVENUE SUR NOTRE TIRAGE AU SORT{% endblock %}
 
 {% block body %}
 
 
-<div class="container">
- <h1 class="text-center">BIENVENUE A NOTRE TIRAGE AU SORT !</h1>
+<div class="container text-center">
+    <h1>BIENVENUE SUR NOTRE TIRAGE AU SORT !</h1>
+
+    <h2>Pour voir le lot que vous avez gagné</h2>
+
+    <h3 class="mt-5">Jouez maintenant en cliquant sur bouton "Tirer au sort"</h3>
+
+    <h4 class="mt-5">Vous pouvez gagner un de ces lots ! </h4>
 
 
-    <h2>Veuillez choisir votre lot !</h2>
+    <div class="row mx-auto mt-5 text-center">
 
-
-
+        <div class="col-2 text-center mx-auto">
+            <img class="img-fluid" width="100px" height="100px" src="{{asset('/images/tesla.jpg')}}" alt="Une tesla">
+        </div>
+        <div class="col-2 text-center mx-auto">
+            <img class="img-fluid" width="100px" height="100px" src="{{asset('/images/ps5.jpg')}}" alt="Une PS5">
+        </div>
+        <div class="col-2 text-center mx-auto">
+            <img class="img-fluid" width="100px" height="100px" src="{{asset('/images/pcgamer.jpg')}}" alt="Un PC Gamer">
+        </div>
+        <div class="col-2 text-center mx-auto">
+            <img class="img-fluid" width="100px" height="100px" src="{{asset('/images/montagne.jpg')}}" alt="Un séjour en montagne">
+        </div>
+        <div class="col-2 text-center mx-auto">
+            <img class="img-fluid" width="100px" height="100px" src="{{asset('/images/cartes.jpg')}}" alt="Un jeu de carte">
+        </div>
     
+    </div>
+
+    <div class="text-center mx-auto mt-5">
+        <a class="btn btn-lg btn-primary" href="{{path('app_tirer', {email:email} )}}">Tirer au sort</a>
+    </div>
+
 </div>
 
 

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\JoueurType;
+use App\Service\TirageService;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,7 +18,6 @@ class ParticipationController extends AbstractController
 {
 
     private $em;
-    private $addFlash;
 
     public function __construct(EntityManagerInterface $em) {
 
@@ -70,9 +70,10 @@ class ParticipationController extends AbstractController
                 $this->em->persist($joueur);
                 $this->em->flush();
 
-                return $this->redirectToRoute('app_show', [
-                    'email' => $formData->get('email')
-                ]);
+
+                return $this->redirect($this->generateUrl('app_voir', [
+                    'email' => $emailparticipant
+                ]));
 
             }
 
@@ -85,20 +86,53 @@ class ParticipationController extends AbstractController
 
     }
 
-    #[Route('/show', name: 'app_show')]
+
+
+
+    #[Route('/voir', name: 'app_voir')]
     /**
      * La route permet au participant de participer au tirage au sort après succès de "l'inscription"
      *
      * @return Response
      */
-    public function show(): Response
+    public function show(Request $request): Response
     {
 
         return $this->render('participation/show.html.twig', [
-
+            'email' => $request->query->get('email'),
         ]);
-
-
-
     }
+
+
+
+
+    #[Route('/tirer', name: 'app_tirer')]
+    /**
+     * La fonction suivante appelle le service TirageService qui contient 3 méthodes. Une méthode permettant de recevoir 
+     * le résultat aléatoire du gain de lot à l'aide de la méthode getImage (getLotGagnant), et une méthode permettant 
+     * de persister le lot en base de donnée pour l'utilisateur en question (persisterLot($lot,$joueur)) et le rendu visuel se fait
+     * sur la page "resultat.html.twig"
+     *
+     * @return Response
+     */
+    public function tirer(TirageService $tirageService, UserRepository $userRepo, Request $request): Response
+    {
+
+        $lotGagnant = $tirageService->getLotGagant();
+        $joueur = $userRepo->findOneBy(['email' => $request->query->get('email')]);
+        
+
+        $lot = array_keys($lotGagnant);
+        $affichageConfirmation = $tirageService->persisterLot($lot[0], $joueur);
+
+        // $affichageConfirmation = $tirageService->persisterLot();
+
+        return $this->render('participation/result.html.twig', [
+            'resultatImgTirage' => $lotGagnant, 
+            'affichageConfirmation' => $affichageConfirmation
+        ]);
+    }
+
+
+
 }
