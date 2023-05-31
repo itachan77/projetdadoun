@@ -111,7 +111,7 @@ class ParticipationController extends AbstractController
      * La fonction suivante appelle le service TirageService qui contient 3 méthodes. Une méthode permettant de recevoir 
      * le résultat aléatoire du gain de lot à l'aide de la méthode getImage (getLotGagnant), et une méthode permettant 
      * de persister le lot en base de donnée pour l'utilisateur en question (persisterLot($lot,$joueur)) et le rendu visuel se fait
-     * sur la page "resultat.html.twig"
+     * sur la page "result.html.twig"
      *
      * @return Response
      */
